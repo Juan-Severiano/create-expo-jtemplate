@@ -1,0 +1,74 @@
+{
+  "name": "create-expo-jtemplate",
+  "version": "2.11.24",
+  "description": "CLI tool to initialize a React Native application with Expo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/roninoss/create-expo-stack.git",
+    "directory": "cli"
+  },
+  "homepage": "https://rn.new",
+  "license": "MIT",
+  "types": "build/types/types.d.ts",
+  "bin": {
+    "create-expo-stack": "bin/create-expo-stack.js"
+  },
+  "files": [
+    "build",
+    "LICENSE",
+    "readme.md",
+    "docs",
+    "bin"
+  ],
+  "scripts": {
+    "build": "bun run clean-build && bun run compile && bun run copy-templates && bun run lint-templates",
+    "bump": "bun run ./src/utilities/bumpVersion.ts",
+    "clean-build": "rm -rf ./build",
+    "compile": "tsc -p .",
+    "copy-templates": "bun run copyfiles -u 2 -a \"./src/templates/**/*\" ./build/templates",
+    "dev": "bun run build && NODE_ENV=development bun run bin/create-expo-stack.js",
+    "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix --resolve-plugins-relative-to . && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
+    "lint-templates": "bun run ejslint ./src/templates",
+    "prepublishOnly": "bun run build",
+    "publishPublic": "bun run build && npm publish --access public",
+    "snapshot-update": "bun test --bail=1 --timeout 160000 --update-snapshots",
+    "test:watch": "bun test --watch",
+    "test": "bun test --bail=1 --timeout 160000",
+    "test:all": "ALL_PACKAGE_MANAGERS=true bun test --bail=1 --timeout 160000"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSameLine": false,
+    "bracketSpacing": true,
+    "printWidth": 120,
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "ejs-lint": "^2.0.0",
+    "expo": "^51.0.11",
+    "figlet": "^1.6.0",
+    "gluegun": "latest",
+    "google-auth-library": "^9.11.0",
+    "googleapis": "^140.0.0",
+    "gradient-string": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/gradient-string": "^1.1.2",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^5.1.3",
+    "prettier": "^3.1.0"
+  },
+  "publishConfig": {
+    "provenance": false
+  }
+}

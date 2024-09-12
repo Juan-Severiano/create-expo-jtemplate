@@ -1,0 +1,17 @@
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require('expo/metro-config');
+<% if (["nativewind", "nativewindui"].includes(props.stylingPackage?.name)) { %>
+  const { withNativeWind } = require("nativewind/metro");
+<% } %>
+
+/** @type {import('expo/metro-config').MetroConfig} */
+// eslint-disable-next-line no-undef
+const config = getDefaultConfig(__dirname);
+
+<% if (props.stylingPackage?.name === "nativewind") { %>
+  module.exports = withNativeWind(config, { input: "./global.css" });
+<% } else if (props.stylingPackage?.name === "nativewindui") { %>
+  module.exports = withNativeWind(config, { input: "./global.css", inlineRem: 16 });
+<% } else { %>
+  module.exports = config;
+<% } %>

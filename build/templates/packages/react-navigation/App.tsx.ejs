@@ -1,0 +1,69 @@
+<% if (props.stylingPackage?.name === "nativewind") { %>
+  import './global.css';
+<% } else if (props.stylingPackage?.name === "nativewinui") { %>
+  import './global.css';
+  import 'expo-dev-client';
+<% } %>
+<% if (props.stylingPackage?.name === "unistyles") { %>
+import './unistyles';
+<% } %>
+<% if (props.internalizationPackage?.name === "i18next") { %>
+  import './translation';
+<% } %>
+import "react-native-gesture-handler";
+<% if (props.stylingPackage?.name === "tamagui") { %>
+	import React, { useEffect } from "react";
+	import { TamaguiProvider } from 'tamagui';
+	import * as SplashScreen from 'expo-splash-screen';
+	import { useFonts } from 'expo-font';
+
+	import config from './tamagui.config'
+
+	SplashScreen.preventAutoHideAsync();
+<% } else if (props.stylingPackage?.name === "restyle") { %>
+  import { ThemeProvider } from '@shopify/restyle';
+  import { theme } from 'theme';
+<% } %>
+
+<% if (props.analyticsPackage?.name === "vexo-analytics") { %>
+  import { vexo } from 'vexo-analytics';
+
+  vexo(process.env.VEXO_API_KEY); // eslint-disable-line
+
+  import RootStack from "./navigation"; // eslint-disable-line
+<% } else { %>
+  import RootStack from "./navigation";
+<% } %>
+
+export default function App() {
+	<% if (props.stylingPackage?.name === "tamagui") { %>
+		const [loaded] = useFonts({
+			Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+			InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+		});
+
+		useEffect(() => {
+			if (loaded) {
+				SplashScreen.hideAsync();
+			}
+		}, [loaded])
+
+		if (!loaded) {
+			return null;
+		}
+
+		return (
+			<TamaguiProvider config={config}>
+				<RootStack />
+			</TamaguiProvider>
+		);
+	<% } else if (props.stylingPackage?.name === "restyle") { %>
+		return (
+      <ThemeProvider theme={theme}>
+        <RootStack />
+      </ThemeProvider>
+    );
+	<% } else { %> 
+		return <RootStack />;
+	<% } %>
+}
